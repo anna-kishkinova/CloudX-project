@@ -1,7 +1,9 @@
 <mat-card>
   <div mat-card-image class="img-container">
     <div class="img-container__inner">
-      <img src="assets/images/products/dog-{{ index() }}.jpeg" alt="" />
+      <a (click)="navigateToProduct($event, product().id)">
+        <img src="assets/images/products/dog-{{ index() }}.jpeg" alt="" />
+      </a>
     </div>
   </div>
 

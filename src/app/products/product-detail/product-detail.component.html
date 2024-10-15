@@ -1,0 +1,8 @@
+<main class="container">
+  @if (productById(); as product) {
+    <h1>{{ product.title }}</h1>
+    <p>Product id: {{ product.id }}</p>
+    <p>Price: {{ product.price }} $</p>
+    <p>Description: {{ product.description }}</p>
+  }
+</main>
