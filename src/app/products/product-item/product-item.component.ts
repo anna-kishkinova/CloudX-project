@@ -24,6 +24,7 @@ import {
   MatCardImage,
   MatCardTitle,
 } from '@angular/material/card';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-item',
@@ -56,6 +57,13 @@ export class ProductItemComponent {
 
   #injector = inject(Injector);
   #cartService = inject(CartService);
+  #router = inject(Router);
+
+  navigateToProduct(event: MouseEvent, id: string): void {
+    event.stopPropagation();
+
+    this.#router.navigate(['product', id]);
+  }
 
   countInCart = computed(() => {
     const cart = this.#cartService.cart();
