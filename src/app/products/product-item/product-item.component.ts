@@ -65,6 +65,10 @@ export class ProductItemComponent {
     this.#router.navigate(['product', id]);
   }
 
+  getImageSrc(index: number): string {
+    return index < 9 ? `assets/images/products/dog-${index}.jpeg`: 'assets/images/products/no-picture.jpeg';
+  }
+
   countInCart = computed(() => {
     const cart = this.#cartService.cart();
 
