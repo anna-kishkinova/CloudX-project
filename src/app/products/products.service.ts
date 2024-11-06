@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {Product} from './product.interface';
 
 import {ApiService} from '../core/api.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,12 @@ export class ProductsService extends ApiService {
       return EMPTY;
     }
 
-    const url = this.getUrl('bff', 'product');
-    return this.http.post<Product>(url, product);
+    const url = this.getUrl('bff', 'products');
+    return this.http.post<Product>(url, product, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    });
   }
 
   editProduct(id: string, changedProduct: Product): Observable<Product> {
@@ -46,7 +51,11 @@ export class ProductsService extends ApiService {
     }
 
     const url = this.getUrl('bff', `products/${id}`);
-    return this.http.get<Product>(url);
+    return this.http.get<Product>(url, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    });
   }
 
   getProducts(): Observable<Product[]> {
@@ -57,7 +66,11 @@ export class ProductsService extends ApiService {
     }
 
     const url = this.getUrl('bff', 'products');
-    return this.http.get<Product[]>(url);
+    return this.http.get<Product[]>(url,{
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    });
   }
 
   getProductsForCheckout(ids: string[]): Observable<Product[]> {
