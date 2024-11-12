@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { switchMap } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ManageProductsService extends ApiService {
-  uploadProductsCSV(file: File): Observable<unknown> {
+  uploadProductsCSV(file: File): Observable<any> {
     if (!this.endpointEnabled('import')) {
       console.warn(
         'Endpoint "import" is disabled. To enable change your environment.ts config',
@@ -28,6 +29,10 @@ export class ManageProductsService extends ApiService {
   private getPreSignedUrl(fileName: string): Observable<string> {
     const url = this.getUrl('import', 'import');
 
-    return this.http.get<string>(`${url}/${fileName}`);
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+      Authorization: 'Basic ' + localStorage.getItem('authorization_token'),
+    });
+
+    return this.http.get<string>(`${url}/${fileName}`, { headers: httpHeaders });
   }
 }
