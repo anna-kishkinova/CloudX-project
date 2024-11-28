@@ -1,9 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { ApiService } from '../core/api.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CartService {
+export class CartService extends ApiService {
   /** Key - item id, value - ordered amount */
   #cart = signal<Record<string, number>>({});
 
@@ -31,7 +34,7 @@ export class CartService {
     this.#cart.set({});
   }
 
-  private updateCount(id: string, type: 1 | -1): void {
+  private updateCount(id: string, type: 1 | -1): void | Subscription {
     const val = this.cart();
     const newVal = {
       ...val,
@@ -44,7 +47,22 @@ export class CartService {
     if (type === 1) {
       newVal[id] = ++newVal[id];
       this.#cart.set(newVal);
-      return;
+
+      const url = this.getUrl('cart', 'cart');
+      return this.http.put<string>(
+        url,
+        { items: [
+            {
+              product: {
+                id: id,
+                title: 'title',
+                description: 'string',
+                price: 3,
+              },
+              count: 1,
+            }
+          ] },
+        { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).subscribe();
     }
 
     if (newVal[id] === 0) {
